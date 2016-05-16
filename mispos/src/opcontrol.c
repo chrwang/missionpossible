@@ -52,8 +52,60 @@
  * This task should never exit; it should end with some kind of infinite loop, even if empty.
  */
 void operatorControl() {
-
+	//Config variables 'n stuff
+	bool autoM = false;
+	bool first = true;
+	const int LFRONT;
+	const int LBACK;
+	const int RFRONT;
+	const int RBACK;
+	const int WINCH1;
+	const int WINCH2;
+	const int FLAGDWN;
+	//main loop
 	while (1) {
+		//auto code
+		autoM = joystickGetDigital(1, 8, JOY_DOWN);
+		if (autoM && first) {
+			autonomous();
+			first = false;
+		}
 		delay(20);
+		//Teleop code
+		if (joystickGetDigital(1, 5, JOY_UP)) { //Drive straight
+			int speed = joystickGetAnalog(1, 3);
+			motorSet(LFRONT, speed);
+			//delay(5);
+			motorSet(LBACK, speed);
+			//delay(5);
+			motorSet(RFRONT, speed);
+			//delay(5);
+			motorSet(RBACK, speed);
+			delay(5);
+		} else { //tank drive
+			int LSpeed = joystickGetAnalog(1, 3);
+			int RSpeed = joystickGetAnalog(1, 2);
+			motorSet(LFRONT, LSpeed);
+			motorSet(LBACK, LSpeed);
+			motorSet(RFRONT, RSpeed);
+			motorSet(RBACK, RSpeed);
+		}
+		//Winch 1
+		if (joystickGetDigital(1, 5, JOY_UP)) {
+			motorSet(WINCH1, 60);
+		} else if (joystickGetDigital(1, 5, JOY_DOWN)) {
+			motorSet(WINCH1, -60);
+		}
+		//Winch 2
+		if (joystickGetDigital(1, 6, JOY_UP)) {
+			motorSet(WINCH2, 60);
+		} else if (joystickGetDigital(1, 6, JOY_DOWN)) {
+			motorSet(WINCH2, -60);
+		}
+		//Flag
+		if (joystickGetDigital(1, 8, JOY_DOWN)) {
+			motorSet(FLAGDWN, 60);
+		}
+
 	}
 }
