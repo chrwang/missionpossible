@@ -55,15 +55,16 @@ void operatorControl() {
 	//Config variables 'n stuff
 	bool autoM = false;
 	bool first = true;
-	const int LFRONT;
-	const int LBACK;
-	const int RFRONT;
-	const int RBACK;
-	const int WINCH1;
-	const int WINCH2;
-	const int FLAGDWN;
+	const int LFRONT=1;
+	const int LBACK=2;
+	const int RFRONT=3;
+	const int RBACK=4;
+	const int WINCH1=5;
+	const int WINCH2=6;
+	const int FLAGDWN=7;
 	//main loop
 	while (1) {
+		motorSet(2,50);
 		//auto code
 		autoM = joystickGetDigital(1, 8, JOY_DOWN);
 		if (autoM && first) {
