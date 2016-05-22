@@ -64,7 +64,7 @@ void operatorControl() {
 	const int FLAGDWN=7;
 	//main loop
 	while (1) {
-		motorSet(2,50);
+		//motorSet(2,50);
 		//auto code
 		autoM = joystickGetDigital(1, 8, JOY_DOWN);
 		if (autoM && first) {
@@ -97,16 +97,22 @@ void operatorControl() {
 		} else if (joystickGetDigital(1, 5, JOY_DOWN)) {
 			motorSet(WINCH1, -60);
 		}
+		else motorSet(WINCH1, 0);
 		//Winch 2
 		if (joystickGetDigital(1, 6, JOY_UP)) {
 			motorSet(WINCH2, 60);
 		} else if (joystickGetDigital(1, 6, JOY_DOWN)) {
 			motorSet(WINCH2, -60);
 		}
+		else motorSet(WINCH2, 0);
 		//Flag
 		if (joystickGetDigital(1, 8, JOY_DOWN)) {
 			motorSet(FLAGDWN, 60);
 		}
+		else if (joystickGetDigital(1,8, JOY_UP)){
+			motorSet(FLAGDWN, -60);
+		}
+		else motorSet(FLAGDWN, 0);
 
 	}
 }
