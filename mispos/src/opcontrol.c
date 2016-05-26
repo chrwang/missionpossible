@@ -55,6 +55,7 @@ void operatorControl() {
 	//Config variables 'n stuff
 	bool autoM = false;
 	bool first = true;
+	bool reset = true;
 	const int LFRONT=1;
 	const int LBACK=2;
 	const int RFRONT=3;
@@ -62,18 +63,22 @@ void operatorControl() {
 	const int WINCH1=5;
 	const int WINCH2=6;
 	const int FLAGDWN=7;
+	long startM;
+	long endM;
+	double circ;
+	double MPH;
 	//main loop
 	while (1) {
 		//motorSet(2,50);
 		//auto code
-		autoM = joystickGetDigital(1, 8, JOY_DOWN);
+		autoM = joystickGetDigital(1, 8, JOY_LEFT);
 		if (autoM && first) {
 			autonomous();
 			first = false;
 		}
-		delay(20);
+		//delay(20);
 		//Teleop code
-		if (joystickGetDigital(1, 5, JOY_UP)) { //Drive straight
+		if (joystickGetDigital(1, 7, JOY_UP)) { //Drive straight
 			int speed = joystickGetAnalog(1, 3);
 			motorSet(LFRONT, speed);
 			//delay(5);
@@ -82,7 +87,7 @@ void operatorControl() {
 			motorSet(RFRONT, speed);
 			//delay(5);
 			motorSet(RBACK, speed);
-			delay(5);
+			//delay(5);
 		} else { //tank drive
 			int LSpeed = joystickGetAnalog(1, 3);
 			int RSpeed = joystickGetAnalog(1, 2);
@@ -113,6 +118,22 @@ void operatorControl() {
 			motorSet(FLAGDWN, -60);
 		}
 		else motorSet(FLAGDWN, 0);
+		//Anemometer
+		if(reset){
+			startM=micros();
+			encoderReset(ameter);
+			reset=false;
+		}
+		long reading = encoderGet(ameter);
+		if(reading/360==4){
+			endM=micros();
+			double revPerSec = (4.0*pow(10.0, 6.0))/((double)(startM-endM));
+			double revPerMin = revPerSec*60.0;
+			MPH = circ/12.0/5280.0*revPerMin*60.0;
+			reset=true;
+		}
+		//Flush Data
 
+		delay(20);
 	}
 }

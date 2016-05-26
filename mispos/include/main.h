@@ -112,6 +112,10 @@ void initialize();
  */
 void operatorControl();
 
+/*
+ * Encoder
+ */
+extern Encoder ameter;
 // End C++ export structure
 #ifdef __cplusplus
 }
